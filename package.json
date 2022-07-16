@@ -18,9 +18,9 @@
     "prepare": "tsdx build",
     "size": "size-limit",
     "analyze": "size-limit --why",
-    "semantic-release": "semantic-release --branches main"
+    "semantic-release": "semantic-release --branches main",
+    "commit": "cz"
   },
-  "peerDependencies": {},
   "husky": {
     "hooks": {
       "pre-commit": "tsdx lint"
@@ -47,15 +47,21 @@
   ],
   "devDependencies": {
     "@size-limit/preset-small-lib": "^7.0.8",
+    "cz-conventional-changelog": "^3.3.0",
     "husky": "^8.0.1",
+    "semantic-release": "^19.0.3",
     "size-limit": "^7.0.8",
     "tsdx": "^0.14.1",
     "tslib": "^2.4.0",
-    "typescript": "^4.7.4",
-    "semantic-release": "^19.0.3"
+    "typescript": "^4.7.4"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/albertilagan/route-typed.git"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
   }
 }
