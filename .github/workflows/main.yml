@@ -1,5 +1,11 @@
 name: CI
-on: [push]
+
+on:
+  push:
+    branches: [main]
+    pull_request:
+      branches: '*'
+
 jobs:
   build:
     name: Build, lint, and test on Node ${{ matrix.node }} and ${{ matrix.os }}
@@ -31,6 +37,27 @@ jobs:
       - name: Build
         run: npm run build
 
+  publish:
+    runs-on: ubuntu-latest
+    if: ${{ github.ref == 'refs/heads/main' }}
+    needs: [build]
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+
+      - name: Use Node ${{ matrix.node }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node }}
+      
+      - name: Install deps and build (with cache)
+        uses: bahmutov/npm-install@v1
+
+      - name: Publish to NPM
+        run: npm run semantic-release
+      
+    
+    
       # - name: Publish
       #   uses: JS-DevTools/npm-publish@v1
       #   with:
