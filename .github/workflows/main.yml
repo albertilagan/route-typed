@@ -52,6 +52,9 @@ jobs:
       
       - name: Install deps and build (with cache)
         uses: bahmutov/npm-install@v1
+      
+      - name: Build
+        run: npm run build
 
       - name: Publish to NPM
         run: npm run semantic-release
