@@ -49,8 +49,8 @@ import { routes } from '~/routes';
 const NavComponent = () => {
   return (
     <>
-      <a href={routes.dashboard()}>Dashboard</a>
-      <a href={routes.user.list()}>Users</a>
+      <a href={routes.dashboard({})}>Dashboard</a>
+      <a href={routes.user.list({})}>Users</a>
     </>
   );
 };

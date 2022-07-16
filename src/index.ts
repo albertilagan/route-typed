@@ -17,17 +17,16 @@ export type ParsedRoute<Pattern extends string> =
 
 // prettier-ignore
 export type Route<Pattern extends string> = {
-  (params?: Params<Pattern>): string;
+  (params: Params<Pattern>): string;
   route: ParsedRoute<Pattern>;
 };
 
 export const route = <Pattern extends string>(pattern: Pattern): Route<Pattern> => {
   const parts = extractParts(pattern);
-  const exec = (params?: Params<Pattern>) => {
+  const exec = (params: Params<Pattern>) => {
     const parsedRoute = parts
     .map(part => {
       if (part.type === 'param') {
-          if (!params) return '';
           return parseValue(params, part.value as RouteParams<Pattern>);
         }
         return part.value;
