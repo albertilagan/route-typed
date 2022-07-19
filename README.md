@@ -26,7 +26,7 @@ export const routes = {
   },
 };
 
-or
+// or
 
 import { createRoute } from 'route-typed';
 
