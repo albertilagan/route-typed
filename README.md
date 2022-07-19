@@ -28,9 +28,9 @@ export const routes = {
 
 // or
 
-import { createRoute } from 'route-typed';
+import { createRoutes } from 'route-typed';
 
-export const routes = createRoute({
+export const routes = createRoutes({
   dashboard: '/dashboard',
   user: {
     list: '/users',

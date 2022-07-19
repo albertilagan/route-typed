@@ -81,13 +81,13 @@ export type Router<Pattern> = {
   [k in keyof Pattern]: Pattern[k] extends string ? Route<Pattern[k]> : Router<Pattern[k]>;
 };
 
-export const createRoute = <Pattern>(config: RouteConfig<Pattern>): Router<Pattern> => {
+export const createRoutes = <Pattern>(config: RouteConfig<Pattern>): Router<Pattern> => {
   const keys = Object.keys(config);
   return keys.reduce((acc, key) => {
     const value = (config as any)[key];
     return {
       ...acc,
-      [key]: typeof value === 'string' ? route(value) : createRoute(value),
+      [key]: typeof value === 'string' ? route(value) : createRoutes(value),
     };
   }, {}) as Router<Pattern>;
 };
