@@ -25,13 +25,13 @@ export const route = <Pattern extends string>(pattern: Pattern): Route<Pattern> 
   const parts = extractParts(pattern);
   const exec = (params: Params<Pattern>) => {
     const parsedRoute = parts
-    .map(part => {
-      if (part.type === 'param') {
+      .map((part) => {
+        if (part.type === 'param') {
           return parseValue(params, part.value as RouteParams<Pattern>);
         }
         return part.value;
       })
-      .filter(value => value !== '')
+      .filter((value) => value !== '')
       .join('/');
     return `/${parsedRoute}`;
   };
@@ -44,10 +44,9 @@ export type Part<Pattern extends string, T extends PartType = PartType> = {
   type: T;
   value: T extends 'param' ? RouteParams<Pattern> : string;
 };
-// { type: string, route: string } | { type: string, param: RouteParams<Pattern> };
 
 export const extractParts = <Pattern extends string>(pattern: Pattern): Part<Pattern>[] => {
-  return pattern.split('/').map(part => {
+  return pattern.split('/').map((part) => {
     if (part.startsWith(':')) return { type: 'param', value: part.replace(/^:/, '') };
     return { type: 'route', value: part };
   });
@@ -66,4 +65,29 @@ export const parseValue = <Pattern extends string>(
 ): string => {
   const value = params[paramName];
   return `${value}`;
+};
+
+export type RouteConfig<Pattern> = {
+  [t in keyof Pattern]: Pattern[t] extends string
+    ? Pattern[t]
+    : Pattern[t] extends number
+    ? never
+    : Pattern[t] extends Symbol
+    ? never
+    : RouteConfig<Pattern[t]>;
+};
+
+export type Router<Pattern> = {
+  [k in keyof Pattern]: Pattern[k] extends string ? Route<Pattern[k]> : Router<Pattern[k]>;
+};
+
+export const createRoute = <Pattern>(config: RouteConfig<Pattern>): Router<Pattern> => {
+  const keys = Object.keys(config);
+  return keys.reduce((acc, key) => {
+    const value = (config as any)[key];
+    return {
+      ...acc,
+      [key]: typeof value === 'string' ? route(value) : createRoute(value),
+    };
+  }, {}) as Router<Pattern>;
 };

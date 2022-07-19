@@ -25,6 +25,28 @@ export const routes = {
     view: route('/users/:id'),
   },
 };
+
+or
+
+import { createRoute } from 'route-typed';
+
+export const routes = createRoute({
+  dashboard: '/dashboard',
+  user: {
+    list: '/users',
+    view: '/users/:userId',
+  },
+});
+
+routes.dashboard.route // => /dashboard
+routes.dashboard({}) // => /dashboard
+
+routes.user.list.route // => /users
+routes.user.list({}) // => /users
+
+routes.user.view.route // => /users/:userId
+routes.user.view({ userId: 1 }) // => /users/1
+
 ```
 
 ```jsx
